@@ -15,14 +15,38 @@ function playRound(computerChoice, playerChoice) {
   console.log('Computer chose ' + computerChoice);
 
   if (playerChoice === victorMap[computerChoice]) {
-    return "You won!";
+    console.log('You win this round.');
+    return 1;
   } else if (playerChoice === computerChoice) {
-    return "It's a tie!";
+    console.log('This round is a tie');
+    return 0;
   } else {
-    return "You lost!";
+    console.log('You lost this round.');
+    return -1;
   }
 }
 
-let computerChoice = getComputerChoice();
-let playerChoice = 'rock';
-console.log(playRound(computerChoice, playerChoice));
+function game() {
+  //initialise score
+  let score = 0;
+
+  //play 5 rounds, getting a new player choice each time
+  for (let i = 0; i < 5; i++) {
+    let playerChoice = prompt("Choose rock, paper, or scissors: ").toLowerCase();
+    let computerChoice = getComputerChoice();
+
+    let roundResult = playRound(playerChoice, computerChoice)
+    score += roundResult;
+  }
+
+  //check score and declare winner
+  if (score > 0) {
+    console.log("You are victorious!");
+  } else if (score === 0) {
+    console.log("It's a tie.");
+  } else {
+    console.log("You have been defeated.");
+  }
+}
+
+game();

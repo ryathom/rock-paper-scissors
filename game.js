@@ -10,11 +10,11 @@ function getComputerChoice() {
   return choices[n];
 }
 
-function playRound(computerChoice, playerChoice) {
+function playRound(playerChoice, computerChoice) {
   console.log('Player chose ' + playerChoice);
   console.log('Computer chose ' + computerChoice);
 
-  if (playerChoice === victorMap[computerChoice]) {
+  if (playerChoice === victorMap.get(computerChoice)) {
     console.log('You win this round.');
     return 1;
   } else if (playerChoice === computerChoice) {

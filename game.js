@@ -26,6 +26,21 @@ function playRound(playerChoice, computerChoice) {
   }
 }
 
+function selectRock() {
+  let computerChoice = getComputerChoice();
+  playRound('rock', computerChoice);
+}
+
+function selectPaper() {
+  let computerChoice = getComputerChoice();
+  playRound('paper', computerChoice);
+}
+
+function selectScissors() {
+  let computerChoice = getComputerChoice();
+  playRound('scissors', computerChoice);
+}
+
 function game() {
   //initialise score
   let score = 0;
@@ -49,4 +64,12 @@ function game() {
   }
 }
 
-game();
+// game();
+
+const rockButton = document.querySelector('.rock');
+const paperButton = document.querySelector('.paper');
+const scissorsButton = document.querySelector('.scissors');
+
+rockButton.addEventListener('click', selectRock);
+paperButton.addEventListener('click', selectPaper);
+scissorsButton.addEventListener('click', selectScissors);

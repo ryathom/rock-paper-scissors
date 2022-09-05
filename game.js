@@ -1,5 +1,7 @@
 const choices = ['rock', 'paper', 'scissors'];
 const victorMap = new Map();
+let playerScore = 0;
+let cpuScore = 0;
 
 victorMap.set('rock', 'paper');
 victorMap.set('paper', 'scissors');
@@ -11,19 +13,31 @@ function getComputerChoice() {
 }
 
 function playRound(playerChoice, computerChoice) {
+  clearGameInfo();
+
   showInfo('You chose ' + playerChoice);
   showInfo('Computer chose ' + computerChoice);
 
   if (playerChoice === victorMap.get(computerChoice)) {
     showInfo('You win this round.');
-    return 1;
+    playerScore += 1;
   } else if (playerChoice === computerChoice) {
     showInfo('This round is a tie');
-    return 0;
   } else {
     showInfo('You lost this round.');
-    return -1;
+    cpuScore += 1;
   }
+
+  updateScoreboard();
+
+  if ((playerScore == 5) || (cpuScore == 5)) {
+    gameOver();
+  }
+}
+
+function updateScoreboard() {
+  playerScoreDisplay.textContent = playerScore;
+  cpuScoreDisplay.textContent = cpuScore;
 }
 
 function selectRock() {
@@ -49,30 +63,37 @@ function showInfo(info) {
   gameInfo.appendChild(content);
 }
 
-// function game() {
-//   //initialise score
-//   let score = 0;
+function clearGameInfo() {
+  while (gameInfo.hasChildNodes()) {
+    gameInfo.removeChild(gameInfo.lastChild);
+  }
+}
 
-//   //play 5 rounds, getting a new player choice each time
-//   for (let i = 0; i < 5; i++) {
-//     let playerChoice = prompt("Choose rock, paper, or scissors: ").toLowerCase();
-//     let computerChoice = getComputerChoice();
+function gameOver() {
+  showInfo(" ");
+  if (playerScore == 5) {
+    showInfo("Against all odds, you have defeated the machine.");
+    showInfo("There's no way you'll do it again, though.");
+  } else {
+    showInfo("You are no match for the Superior Intelligence.");
+    showInfo("Dare to try again, mortal?");
+  }
 
-//     let roundResult = playRound(playerChoice, computerChoice)
-//     score += roundResult;
-//   }
+  const replay = document.createElement('button');
+  replay.classList.add('replay');
+  replay.textContent = 'RESTART';
+  replay.addEventListener('click', playAgain);
 
-//   //check score and declare winner
-//   if (score > 0) {
-//     console.log("You are victorious!");
-//   } else if (score === 0) {
-//     console.log("It's a tie.");
-//   } else {
-//     console.log("You have been defeated.");
-//   }
-// }
+  gameInfo.appendChild(replay);
+}
 
-// game();
+function playAgain() {
+  playerScore = 0;
+  cpuScore = 0;
+
+  updateScoreboard();
+  clearGameInfo();
+}
 
 const rockButton = document.querySelector('.rock');
 const paperButton = document.querySelector('.paper');
@@ -80,7 +101,11 @@ const scissorsButton = document.querySelector('.scissors');
 
 const gameInfo = document.querySelector('.gameinfo');
 const scoreBoard = document.querySelector('.scoreboard');
+const playerScoreDisplay = document.querySelector('.player-score-number');
+const cpuScoreDisplay = document.querySelector('.cpu-score-number');
 
 rockButton.addEventListener('click', selectRock);
 paperButton.addEventListener('click', selectPaper);
 scissorsButton.addEventListener('click', selectScissors);
+
+updateScoreboard();
